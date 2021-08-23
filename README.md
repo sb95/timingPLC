@@ -100,7 +100,7 @@ boolean onOffState(){
     sysOff = false;
     return true;
     }
-  else if(digitalRead(butOn) == HIGH && sysOff == false){
+  else if(digitalRead(butOff) == HIGH && sysOff == false){
     sysOn = false;
     sysOff = true;
     return false;
