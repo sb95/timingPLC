@@ -5,6 +5,7 @@ long currentTime;
 long onTime;
 long offTime;
 const long oneMinute = 60000;
+long minCompare;
 int indexMin;
 
 //analog readings
@@ -34,18 +35,30 @@ void setup() {
 
 void loop() {
   currentTime = millis();
-  if(timeCompare){
-    indexMin++
-  }
-  onTimeRead = analogRead(A0);
-  offTimeRead = analogRead(A1);
-  stateDesisded = onOffState();
+  
+  onTimeRead = analogRead(A0); //pot for on time
+  offTimeRead = analogRead(A1); //pot for off time
+  stateDesided = onOffState(); //2 buttons will decide on off state
 
-  if(stateDesisded){
-    onSelect = minuteInterval(onTimeRead);
-    offSelect = minuteInterval(offTimeRead);
-    if(timeCompare){
-      indexMin++
+  if(stateDesided){ //if button on decided
+    onSelect = minuteInterval(onTimeRead); //save selected minutes to run
+    offSelect = minuteInterval(offTimeRead); //save selected minutes to stay off
+    minCompare = currentTime; //update time for proper comparison
+      while(sysOn){ //while off button is NOT pressed
+        onOffState(); //monitor what button is pressed
+        int totalRunTime = onSelect + offSelect; //total cycle time in minutes
+          if(timeCompare){ //every minute increment index
+            indexMin++;
+           }
+          if(indexMin <= onSelect){
+          digitalWrite(motRelay, HIGH); 
+          }
+          else if(indexMin > offSelect && indexMin <= totalRunTime){
+          digitalWrite(motRelay, LOW);
+          }
+          else if(indexMin > totalRunTime){
+          indexMin = 0;
+          }
       }
     }
 
