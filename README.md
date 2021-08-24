@@ -47,7 +47,7 @@ void loop() {
       while(sysOn){ //while off button is NOT pressed
         onOffState(); //monitor what button is pressed
         int totalRunTime = onSelect + offSelect; //total cycle time in minutes
-          if(timeCompare){ //every minute increment index
+          if(timeCompare == true){ //every minute increment index
             indexMin++;
            }
           if(indexMin <= onSelect){
